@@ -29,3 +29,7 @@ RUN if ! cat /etc/group | grep -e "^pub-cache:" > /dev/null 2>&1; then groupadd 
 # RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
 #     && apt-get -y install --no-install-recommends <your-package-list-here>
 
+# Install Protobuf compiler and Dart support
+RUN apt update && export DEBIAN_FRONTEND=noninteractive \
+    && apt -y install --no-install-recommends protobuf-compiler
+RUN dart pub global activate protoc_plugin
