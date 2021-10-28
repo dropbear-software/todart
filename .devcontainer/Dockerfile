@@ -7,6 +7,9 @@ ARG INSTALL_ZSH="true"
 # [Option] Upgrade OS packages to their latest versions
 ARG UPGRADE_PACKAGES="false"
 
+# Default version of protoc compiler
+ARG PROTOC_VERSION="3.19.0"
+
 # Install needed packages and setup non-root user. Use a separate RUN statement to add your own dependencies.
 ARG USERNAME=codespace
 ARG USER_UID=1000
@@ -30,6 +33,8 @@ RUN if ! cat /etc/group | grep -e "^pub-cache:" > /dev/null 2>&1; then groupadd 
 #     && apt-get -y install --no-install-recommends <your-package-list-here>
 
 # Install Protobuf compiler and Dart support
-RUN apt update && export DEBIAN_FRONTEND=noninteractive \
-    && apt -y install --no-install-recommends protobuf-compiler
+RUN curl -o /tmp/protoc.zip -L https://github.com/protocolbuffers/protobuf/releases/download/v${PROTOC_VERSION}/protoc-${PROTOC_VERSION}-linux-x86_64.zip
+RUN unzip /tmp/protoc.zip -d /home/${USERNAME}/.local/
+RUN chown -R ${USERNAME}: /home/${USERNAME}/.local/
+RUN rm /tmp/protoc.zip
 RUN dart pub global activate protoc_plugin

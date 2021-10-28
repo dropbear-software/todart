@@ -5,7 +5,10 @@
 	"build": {
 		"dockerfile": "Dockerfile",
 		// Update VARIANT to pick a Dart version
-		"args": { "VARIANT": "2" }
+		"args": { 
+			"VARIANT": "2",
+			"PROTOC_VERSION": "3.19.0"
+		}
 	},
 
 	// Set *default* container specific settings.json values on container create.
