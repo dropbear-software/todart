@@ -1,5 +1,5 @@
-name: todart_server
-description: A sample command-line application.
+name: todart_common
+description: Code shared between both the server and the application.
 version: 0.1.0
 
 # Prevent accidental publishing to pub.dev.
@@ -8,11 +8,8 @@ publish_to: 'none'
 environment:
   sdk: '>=2.14.4 <3.0.0'
 
-dependencies:
-  grpc: ^3.0.2
-  todart_common: 
-    path: ../common
-
 dev_dependencies:
   lints: ^1.0.0
   test: ^1.16.0
+dependencies: 
+  grpc: ^3.0.2
