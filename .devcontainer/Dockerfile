@@ -16,7 +16,7 @@ RUN bash /tmp/library-scripts/common-debian.sh "${INSTALL_ZSH}" "${USERNAME}" "$
 
 # Use this section to install additional OS packages.
 RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
-    && apt-get -y install --no-install-recommends xz-utils   
+    && apt-get -y install --no-install-recommends xz-utils make  
 
 # Default version of protoc compiler
 ARG PROTOC_VERSION="3.19.0"
