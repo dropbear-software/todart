@@ -40,5 +40,5 @@
 		"PATH": "${containerEnv:PATH}:/home/codespace/.local/flutter/bin:/home/codespace/.pub-cache/bin",
 	},
 
-	"postCreateCommand": "dart pub global activate protoc_plugin && dart pub get"
+	"postCreateCommand": "dart pub global activate protoc_plugin && dart pub global activate mono_repo && mono_repo pub get"
 }
