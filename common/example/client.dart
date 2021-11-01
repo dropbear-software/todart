@@ -5,7 +5,7 @@ import 'package:todart_common/src/generated/protos/greeter.pbgrpc.dart';
 Future<void> main(List<String> args) async {
   final channel = ClientChannel(
     'localhost',
-    port: 50051,
+    port: 1337,
     options: ChannelOptions(
       credentials: ChannelCredentials.insecure(),
       codecRegistry:
