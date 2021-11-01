@@ -1,0 +1,20 @@
+name: grpc_web_demo
+description: An absolute bare-bones web app.
+version: 1.0.0
+# homepage: https://www.example.com
+# Prevent accidental publishing to pub.dev.
+publish_to: 'none'
+
+environment:
+  sdk: '>=2.14.4 <3.0.0'
+
+
+dependencies:
+  grpc: ^3.0.2
+  todart_common: 
+    path: ../../../common
+
+dev_dependencies:
+  build_runner: ^1.10.0
+  build_web_compilers: ^2.11.0
+  lints: ^1.0.0
