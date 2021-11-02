@@ -6,7 +6,7 @@ DEFAULT_PROTOBUFS_PATH = $(PROJECT_PATH)/third_party/github.com/google/
 API_DIRECTORY = $(PROJECT_PATH)/api/
 API_SERVICE_DIRECTORY = $(PROJECT_PATH)/api/v1alpha/services/
 API_RESOURCE_DIRECTORY = $(PROJECT_PATH)/api/v1alpha/resources/
-DART_GENERATED_PROTO_DIR = common/lib/src/generated/protos/
+DART_GENERATED_PROTO_DIR = common/lib/src/generated/api/
 
 fetch_google_protos:
 	echo "Fetching Google common proto files..."
