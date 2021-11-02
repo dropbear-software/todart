@@ -1,10 +1,11 @@
 import 'package:grpc/grpc.dart';
-// ignore: implementation_imports
-import 'package:todart_common/src/generated/protos/greeter.pbgrpc.dart';
+import 'package:todart_common/api_base.dart';
 
-class GreeterService extends GreeterServiceBase {
+class ProjectService extends ProjectServiceBase {
   @override
-  Future<HelloReply> sayHello(ServiceCall call, HelloRequest request) async {
-    return HelloReply()..message = 'Hello, ${request.name}!';
+  Future<ListProjectsResponse> listProjects(
+      ServiceCall call, ListProjectsRequest request) {
+    // TODO: implement listProjects
+    throw UnimplementedError();
   }
 }

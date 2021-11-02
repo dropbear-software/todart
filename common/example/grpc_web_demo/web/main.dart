@@ -1,16 +1,17 @@
 import 'dart:html';
 import 'package:grpc/grpc_web.dart';
-// ignore: avoid_relative_lib_imports
-import 'package:todart_common/src/generated/protos/greeter.pbgrpc.dart';
+import 'package:todart_common/api_base.dart';
 
 void main() async {
   final channel = GrpcWebClientChannel.xhr(Uri.parse('http://localhost:1337'));
-  final service = GreeterClient(channel);
+  final service = ProjectServiceClient(channel);
 
   try {
-    var result = await service.sayHello(HelloRequest(name: 'World'));
-    querySelector('#output')?.text = result.message;
+    var result = await service.listProjects(ListProjectsRequest());
+    for (var project in result.projects) {
+      window.console.log(project);
+    }
   } catch (error) {
-    querySelector('#error')?.text = error.toString();
+    window.console.error(error.toString());
   }
 }
