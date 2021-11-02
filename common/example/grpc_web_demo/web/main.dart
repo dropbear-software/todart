@@ -1,6 +1,6 @@
 import 'dart:html';
 import 'package:grpc/grpc_web.dart';
-import 'package:todart_common/api_base.dart';
+import 'package:todart_common/api.dart';
 
 void main() async {
   final channel = GrpcWebClientChannel.xhr(Uri.parse('http://localhost:1337'));
