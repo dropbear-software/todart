@@ -51,11 +51,11 @@ void main() {
       });
 
       test('enforces a default pageSize value when none is specified', () {
-        final validRequest = ListProjectsRequest(pageSize: 10);
+        final validRequest = ListProjectsRequest();
         final response =
             ProjectServiceHelper.sanitizeListProjectsRequest(validRequest);
 
-        expect(response.pageSize, equals(10));
+        expect(response.pageSize, equals(defaultPageSize));
       });
     });
   });
