@@ -20,6 +20,13 @@ service ProjectService {
       get: "/v1alpha/projects"
     };
   }
+
+  // Following guidance from https://google.aip.dev/131
+  rpc GetProject(GetProjectRequest) returns (dropbear.todart.v1alpha.resources.Project) {
+    option (google.api.http) = {
+      get: "/v1alpha/projects/*}"
+    };
+  }
 }
 
 message ListProjectsRequest {
@@ -44,4 +51,11 @@ message ListProjectsResponse {
   // A token, which can be sent as `page_token` to retrieve the next page.
   // If this field is omitted, there are no subsequent pages.
   string next_page_token = 2;
+}
+
+// 
+message GetProjectRequest {
+  // The name of the project to retrieve.
+  // Format: projects/{project}
+  int32 name = 1;
 }
