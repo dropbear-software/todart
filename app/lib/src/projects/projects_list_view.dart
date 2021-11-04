@@ -1,70 +1,95 @@
 import 'package:flutter/material.dart';
-import 'package:grpc/grpc_web.dart';
 import 'package:todart_common/api.dart';
-import 'project_card.dart';
-
+import 'package:todart_web/src/app.dart';
+import 'package:todart_web/src/projects/projects_controller.dart';
 import '../settings/settings_view.dart';
 
-/// Displays a list of Projects.
-class ProjectsListView extends StatelessWidget {
+class ProjectsListView extends StatefulWidget {
   const ProjectsListView({Key? key}) : super(key: key);
 
   static const routeName = '/';
+  static const screenName = 'Projects';
+
+  @override
+  _ProjectsListViewState createState() => _ProjectsListViewState();
+}
+
+class _ProjectsListViewState extends State<ProjectsListView> {
+  late final ProjectsController _projectsController =
+      ProjectsController(endpoint: Uri.parse(MyApp.apiEndpoint));
+  late final Future<ListProjectsResponse> _apiResponse;
+
+  @override
+  void initState() {
+    super.initState();
+    _apiResponse = _projectsController.listProjects(ListProjectsRequest());
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Projects'),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.settings),
-            onPressed: () {
-              // Navigate to the settings page. If the user leaves and returns
-              // to the app after it has been killed while running in the
-              // background, the navigation stack is restored.
-              Navigator.restorablePushNamed(context, SettingsView.routeName);
-            },
-          ),
-        ],
+      appBar: _showAppBar(context),
+      body: Center(
+        child: FutureBuilder<ListProjectsResponse>(
+          future: _apiResponse,
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              return _showProjects(context, snapshot.data!.projects);
+            } else if (snapshot.hasError) {
+              return _showError(context, error: snapshot.error!);
+            }
+
+            // By default, show a loading spinner.
+            return const CircularProgressIndicator();
+          },
+        ),
       ),
-      body: buildProjectList(context),
     );
   }
 
-  Widget buildProjectList(BuildContext context) {
-    final channel =
-        GrpcWebClientChannel.xhr(Uri.parse('http://localhost:1337'));
-    final service = ProjectServiceClient(channel);
-
-    return FutureBuilder(
-      future: service.listProjects(ListProjectsRequest()),
-      builder: (context, AsyncSnapshot<ListProjectsResponse> snapshot) {
-        if (snapshot.connectionState == ConnectionState.done) {
-          List<Project>? projects = snapshot.data!.projects;
-          return (projects != null)
-              ? ListView.builder(
-                  itemCount: projects.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return GestureDetector(
-                      onTap: () {
-                        // Navigate to detail page here...;
-                      },
-                      child: Padding(
-                        padding: EdgeInsets.only(
-                            top: index == 0 ? 12 : 0, bottom: 12),
-                        child: ProjectCard(projects[index]),
-                      ),
-                    );
-                  },
-                )
-              : const Text('Something went wrong loading the data.');
-        } else {
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
-        }
+  Widget _showProjects(BuildContext context, List<Project> projects) {
+    return ListView.builder(
+      itemCount: projects.length,
+      itemBuilder: (BuildContext context, int index) {
+        return GestureDetector(
+          onTap: _navigateToProjectDetailPage(projects[index]),
+          child: Padding(
+            padding: EdgeInsets.only(top: index == 0 ? 12 : 0, bottom: 12),
+            child: _projectCard(context, project: projects[index]),
+          ),
+        );
       },
     );
+  }
+
+  Widget _projectCard(BuildContext context, {required Project project}) {
+    return ListTile(
+      title: Text(project.name),
+    );
+  }
+
+  Widget _showError(BuildContext context, {required Object error}) {
+    return Text(error.toString());
+  }
+
+  AppBar _showAppBar(BuildContext context) {
+    return AppBar(
+      title: const Text(ProjectsListView.screenName),
+      actions: [
+        IconButton(
+          icon: const Icon(Icons.settings),
+          onPressed: () {
+            // Navigate to the settings page. If the user leaves and returns
+            // to the app after it has been killed while running in the
+            // background, the navigation stack is restored.
+            Navigator.restorablePushNamed(context, SettingsView.routeName);
+          },
+        ),
+      ],
+    );
+  }
+
+  _navigateToProjectDetailPage(Project project) {
+    // Put nav stuff here
   }
 }
