@@ -22,4 +22,15 @@ class ProjectService extends ProjectServiceBase {
       throw GrpcError.unknown(e.toString());
     }
   }
+
+  @override
+  Future<Project> getProject(
+      ServiceCall call, GetProjectRequest request) async {
+    try {
+      final project = await projectRepository.getProject(request.name);
+      return project;
+    } catch (e) {
+      throw GrpcError.notFound();
+    }
+  }
 }
