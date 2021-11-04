@@ -16,7 +16,7 @@ class ProjectsListView extends StatefulWidget {
 
 class _ProjectsListViewState extends State<ProjectsListView> {
   late final ProjectsController _projectsController =
-      ProjectsController(endpoint: Uri.parse(MyApp.apiEndpoint));
+      ProjectsController(endpoint: Uri.parse(ToDart.apiEndpoint));
   late final Future<ListProjectsResponse> _apiResponse;
 
   @override

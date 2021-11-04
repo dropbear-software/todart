@@ -5,11 +5,11 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'sample_feature/sample_item_details_view.dart';
 import 'settings/settings_controller.dart';
 import 'settings/settings_view.dart';
-import 'projects/projects_list_screen.dart';
+import 'projects/projects_list_view.dart';
 
 /// The Widget that configures your application.
-class MyApp extends StatelessWidget {
-  const MyApp({
+class ToDart extends StatelessWidget {
+  const ToDart({
     Key? key,
     required this.settingsController,
   }) : super(key: key);
