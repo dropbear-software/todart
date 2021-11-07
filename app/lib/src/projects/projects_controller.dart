@@ -5,8 +5,9 @@ import 'package:grpc/grpc_web.dart';
 ///
 /// Controllers glue Data Services to Flutter Widgets.
 class ProjectsController {
-  ProjectsController({required Uri endpoint}) {
-    _serviceEndpoint = GrpcWebClientChannel.xhr(endpoint);
+  ProjectsController() {
+    _serviceEndpoint =
+        GrpcWebClientChannel.xhr(Uri.parse('http://localhost:1337'));
     _serviceClient = ProjectServiceClient(_serviceEndpoint);
   }
 
