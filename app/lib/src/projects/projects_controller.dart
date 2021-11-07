@@ -17,4 +17,9 @@ class ProjectsController {
     final results = await _serviceClient.listProjects(request);
     return results;
   }
+
+  Future<Project> getProjects(GetProjectRequest getProjectRequest) async {
+    final result = await _serviceClient.getProject(getProjectRequest);
+    return result;
+  }
 }
