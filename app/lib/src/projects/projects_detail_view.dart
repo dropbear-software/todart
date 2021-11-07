@@ -6,13 +6,11 @@ import 'projects_list_view.dart';
 import 'package:grpc/grpc_web.dart';
 
 class ProjectDetailView extends StatefulWidget {
-  const ProjectDetailView({Key? key, required this.projectId})
-      : super(key: key);
+  const ProjectDetailView({Key? key, this.projectId}) : super(key: key);
 
-  static const routeName = '/project/1';
   static const screenName = 'Project Details';
 
-  final int projectId;
+  final String? projectId;
 
   @override
   _ProjectDetailViewState createState() => _ProjectDetailViewState();
