@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:todart_common/api.dart';
 import '../settings/settings_view.dart';
 
@@ -23,7 +24,9 @@ class ProjectsListView extends StatelessWidget {
       itemCount: projects.length,
       itemBuilder: (BuildContext context, int index) {
         return GestureDetector(
-          onTap: _navigateToProjectDetailPage(projects[index]),
+          onTap: () {
+            GoRouter.of(context).go('/project/${projects[index].resourceName}');
+          },
           child: Padding(
             padding: EdgeInsets.only(top: index == 0 ? 12 : 0, bottom: 12),
             child: _projectCard(context, project: projects[index]),
@@ -50,13 +53,10 @@ class ProjectsListView extends StatelessWidget {
             // to the app after it has been killed while running in the
             // background, the navigation stack is restored.
             Navigator.restorablePushNamed(context, SettingsView.routeName);
+            // GoRouter.of(context).go(SettingsView.routeName);
           },
         ),
       ],
     );
-  }
-
-  _navigateToProjectDetailPage(Project project) {
-    // Put nav stuff here
   }
 }
