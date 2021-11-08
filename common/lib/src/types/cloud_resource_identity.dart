@@ -30,7 +30,7 @@ class CloudResouceIdentity {
   // Static Variables & Constants
 
   static const int _maxIdentifierSizeInBytes = 64;
-  static const int _minIdentifierSizeInBytes = 10;
+  static const int _minIdentifierSizeInBytes = 4;
 
   // Instance Variables & Constants
 
@@ -38,7 +38,7 @@ class CloudResouceIdentity {
 
   // Constructors & Factories
 
-  CloudResouceIdentity({int sizeInBytes = 12}) {
+  CloudResouceIdentity({int sizeInBytes = 7}) {
     if (sizeInBytes > CloudResouceIdentity._maxIdentifierSizeInBytes) {
       throw RangeError(
           "sizeInBytes can not be higher than $CloudResouceIdentity._maxIdentifierSizeInBytes bytes");

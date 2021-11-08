@@ -33,8 +33,8 @@ class ApplicationRouter {
       pageBuilder: (context, state) => NoTransitionPage<void>(
         key: state.pageKey,
         child: FutureBuilder<Project>(
-          future: _projectController.getProjects(
-              GetProjectRequest(name: int.parse(state.params['projectId']!))),
+          future: _projectController
+              .getProjects(GetProjectRequest(name: state.params['projectId']!)),
           builder: (context, snapshot) {
             if (snapshot.hasError) {
               return ErrorPage(snapshot.error as Exception?);

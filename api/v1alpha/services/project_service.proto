@@ -57,5 +57,5 @@ message ListProjectsResponse {
 message GetProjectRequest {
   // The name of the project to retrieve.
   // Format: projects/{project}
-  int32 name = 1;
+  string name = 1;
 }

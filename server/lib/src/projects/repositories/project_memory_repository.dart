@@ -1,8 +1,9 @@
 import 'package:todart_common/api.dart';
+import 'package:todart_common/common.dart';
 import 'project_repository.dart';
 
 class ProjectMemoryRepository implements ProjectRepository {
-  final List<Project> _projects = [];
+  final Map<String, Project> _inMemoryDatabase = {};
 
   ProjectMemoryRepository() {
     _seedDatabase();
@@ -10,20 +11,27 @@ class ProjectMemoryRepository implements ProjectRepository {
 
   @override
   Future<List<Project>> listProjects() {
-    return Future.value(_projects);
+    final projects = _inMemoryDatabase.values.toList();
+    return Future.value(projects);
   }
 
   void _seedDatabase() {
-    _projects.add(Project(name: 'Build API'));
-    _projects.add(Project(name: 'Write tests'));
+    final List<String> seedProjectList = ['Work', 'Coding', 'Wedding'];
+
+    // Create a [Project] for each item in the list and add it to our "database"
+    for (var item in seedProjectList) {
+      final project =
+          Project(name: item, resourceName: CloudResouceIdentity().toString());
+      _inMemoryDatabase.putIfAbsent(project.resourceName, () => project);
+      print(
+          'Created project resource name: ${project.name}, id: ${project.resourceName}');
+    }
   }
 
   @override
-  Future<Project> getProject(int id) {
-    if (id < _projects.length && id > -1) {
-      return Future.value(_projects[id]);
-    } else {
-      throw RangeError('Not found');
-    }
+  Future<Project> getProject(String resourceName) {
+    // If there are any dashes in the identifier remove them first
+    resourceName = resourceName.replaceAll('-', '');
+    return Future.value(_inMemoryDatabase[resourceName]);
   }
 }
