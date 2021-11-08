@@ -46,7 +46,7 @@ void main() {
       expect(() => CloudResouceIdentity(sizeInBytes: -1),
           throwsA(isA<RangeError>()));
 
-      expect(() => CloudResouceIdentity(sizeInBytes: 9),
+      expect(() => CloudResouceIdentity(sizeInBytes: 2),
           throwsA(isA<RangeError>()));
     });
 
