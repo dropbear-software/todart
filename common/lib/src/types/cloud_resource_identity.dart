@@ -39,10 +39,14 @@ class CloudResouceIdentity {
   // Constructors & Factories
 
   CloudResouceIdentity({int sizeInBytes = 12}) {
-    if (sizeInBytes > CloudResouceIdentity._maxIdentifierSizeInBytes ||
-        sizeInBytes < CloudResouceIdentity._minIdentifierSizeInBytes) {
+    if (sizeInBytes > CloudResouceIdentity._maxIdentifierSizeInBytes) {
       throw RangeError(
           "sizeInBytes can not be higher than $CloudResouceIdentity._maxIdentifierSizeInBytes bytes");
+    }
+
+    if (sizeInBytes < CloudResouceIdentity._minIdentifierSizeInBytes) {
+      throw RangeError(
+          "sizeInBytes can not be lower than $CloudResouceIdentity._minIdentifierSizeInBytes bytes");
     }
 
     _identifier =
@@ -60,6 +64,9 @@ class CloudResouceIdentity {
   /// CloudResourceIdentity.isValid(WN9P3405N1MQ2KXK5X60A) == true
   /// ```
   static bool isValid(String identifier) {
+    // If there are any dashes in the identifier remove them first
+    identifier = identifier.replaceAll('-', '');
+
     // Split the identifier into two pieces:
     // the value and the checksum character
     final value = identifier.substring(0, identifier.length - 1);
@@ -99,11 +106,12 @@ class CloudResouceIdentity {
 
   /// Creates a [Uint8List] of random data of a fixed size.
   static Uint8List _createRandomBytes({required int sizeBytes}) {
-    final _randomNumberGenerator = Random.secure();
-    final randomNumbers = List<int>.generate(
-        sizeBytes, (i) => _randomNumberGenerator.nextInt(256));
-
-    return Uint8List.fromList(randomNumbers);
+    final randomNumberGenerator = Random.secure();
+    final Uint8List randomData = Uint8List(sizeBytes);
+    for (var i = 0; i < sizeBytes; i++) {
+      randomData[i] = randomNumberGenerator.nextInt(256);
+    }
+    return randomData;
   }
 
   /// Calculates a [Base32] checksum value.
@@ -119,24 +127,14 @@ class CloudResouceIdentity {
   }
 
   /// Converts a [Uint8List] byte buffer into a [BigInt]
-  ///
-  /// Source: https://github.com/dart-lang/sdk/issues/32803#issuecomment-387405784
   static BigInt _convertBytesToBigInt(Uint8List bytes) {
-    BigInt read(int start, int end) {
-      if (end - start <= 4) {
-        int result = 0;
-        for (int i = end - 1; i >= start; i--) {
-          result = result * 256 + bytes[i];
-        }
-        return BigInt.from(result);
-      }
-      int mid = start + ((end - start) >> 1);
-      var result = read(start, mid) +
-          read(mid, end) * (BigInt.one << ((mid - start) * 8));
-      return result;
-    }
+    BigInt result = BigInt.zero;
 
-    return read(0, bytes.length);
+    for (final byte in bytes) {
+      // reading in big-endian, so we essentially concat the new byte to the end
+      result = (result << 8) | BigInt.from(byte);
+    }
+    return result;
   }
 
   // Public instance methods
