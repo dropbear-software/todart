@@ -1,9 +1,9 @@
 import 'package:grpc/grpc.dart';
-import 'package:todart_server/server.dart' as api;
+import 'package:todart_server/server.dart';
 
 Future<void> main(List<String> args) async {
   final server = Server(
-    [api.GreeterService()],
+    [ProjectService()],
     const <Interceptor>[],
     CodecRegistry(codecs: const [GzipCodec()]),
   );

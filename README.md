@@ -21,10 +21,8 @@ dart server/bin/server.dart
 envoy -c tool/envoy-local.yaml
 ```
 
-**Starting the web-client**
+**Starting the flutter-web-client**
 ```bash
-dart pub global activate webdev
-cd common/example/grpc_web_demo
-dart pub get
-webdev serve web:9000
+cd app
+flutter run --web-hostname=0.0.0.0 --web-port=3000 -d web-server
 ```

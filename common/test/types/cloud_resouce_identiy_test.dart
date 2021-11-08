@@ -25,8 +25,7 @@ void main() {
 
   group('Validation', () {
     final identity = CloudResouceIdentity();
-    // Hello World string from https://www.dcode.fr/crockford-base-32-encoding
-    const knownGoodValue = '91JPRV3F41BPYWKCCG8';
+
     test('Validates its own toString method correctly', () {
       expect(CloudResouceIdentity.isValid(identity.toString()), isTrue);
     });
@@ -36,6 +35,8 @@ void main() {
     });
 
     test('Validates a known good string correctly', () {
+      // Hello World string from https://www.dcode.fr/crockford-base-32-encoding
+      const knownGoodValue = '91JPRV3F41BPYWKCCG8';
       expect(CloudResouceIdentity.isValid(knownGoodValue), isTrue);
     });
   });
@@ -45,7 +46,7 @@ void main() {
       expect(() => CloudResouceIdentity(sizeInBytes: -1),
           throwsA(isA<RangeError>()));
 
-      expect(() => CloudResouceIdentity(sizeInBytes: 9),
+      expect(() => CloudResouceIdentity(sizeInBytes: 2),
           throwsA(isA<RangeError>()));
     });
 
