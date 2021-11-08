@@ -39,10 +39,14 @@ class CloudResouceIdentity {
   // Constructors & Factories
 
   CloudResouceIdentity({int sizeInBytes = 12}) {
-    if (sizeInBytes > CloudResouceIdentity._maxIdentifierSizeInBytes ||
-        sizeInBytes < CloudResouceIdentity._minIdentifierSizeInBytes) {
+    if (sizeInBytes > CloudResouceIdentity._maxIdentifierSizeInBytes) {
       throw RangeError(
           "sizeInBytes can not be higher than $CloudResouceIdentity._maxIdentifierSizeInBytes bytes");
+    }
+
+    if (sizeInBytes < CloudResouceIdentity._minIdentifierSizeInBytes) {
+      throw RangeError(
+          "sizeInBytes can not be lower than $CloudResouceIdentity._minIdentifierSizeInBytes bytes");
     }
 
     _identifier =
