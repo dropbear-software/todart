@@ -117,24 +117,13 @@ class CloudResouceIdentity {
   /// Calculates a [Base32] checksum value.
   static int _calculateChecksum(Uint8List bytes) {
     // Start by converting the byte buffer into a [BigInt] value
-    final intValue = _convertBytesToBigInt(bytes);
+    final intValue = _BigInt.fromByteStream(bytes);
 
     // Calculate the checksum value by determining the remainder after
     // dividing by 37
     final checksum = intValue % BigInt.from(37);
 
     return checksum.toInt();
-  }
-
-  /// Converts a [Uint8List] byte buffer into a [BigInt]
-  static BigInt _convertBytesToBigInt(Uint8List bytes) {
-    BigInt result = BigInt.zero;
-
-    for (final byte in bytes) {
-      // reading in big-endian, so we essentially concat the new byte to the end
-      result = (result << 8) | BigInt.from(byte);
-    }
-    return result;
   }
 
   // Public instance methods
@@ -168,5 +157,20 @@ class CloudResouceIdentity {
     // Return the [Base32] serialized identifier with the checksum
     // character appended.
     return encoded + checksumCharacter;
+  }
+}
+
+// BigInt doesn't come with a constructor that accepts [Uint8List] arguments
+// so we can create an extension for it here.
+extension _BigInt on BigInt {
+  /// Converts a [Uint8List] byte buffer into a [BigInt]
+  static fromByteStream(Uint8List bytes) {
+    BigInt result = BigInt.zero;
+
+    for (final byte in bytes) {
+      // reading in big-endian, so we essentially concat the new byte to the end
+      result = (result << 8) | BigInt.from(byte);
+    }
+    return result;
   }
 }
