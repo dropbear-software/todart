@@ -117,7 +117,7 @@ class CloudResouceIdentity {
   /// Calculates a [Base32] checksum value.
   static int _calculateChecksum(Uint8List bytes) {
     // Start by converting the byte buffer into a [BigInt] value
-    final intValue = _BigInt.fromByteStream(bytes);
+    final BigInt intValue = _BigInt.fromByteStream(bytes);
 
     // Calculate the checksum value by determining the remainder after
     // dividing by 37
