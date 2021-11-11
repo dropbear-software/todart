@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:todart_common/api.dart';
 import '../settings/settings_view.dart';
@@ -11,13 +12,6 @@ class ProjectsListView extends StatelessWidget {
   static const screenName = 'Projects';
 
   final ListProjectsResponse apiResponse;
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: _showAppBar(context),
-        body: _showProjects(context, apiResponse.projects));
-  }
 
   Widget _showProjects(BuildContext context, List<Project> projects) {
     return ListView.builder(
@@ -58,5 +52,12 @@ class ProjectsListView extends StatelessWidget {
         ),
       ],
     );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        appBar: _showAppBar(context),
+        body: _showProjects(context, apiResponse.projects));
   }
 }
