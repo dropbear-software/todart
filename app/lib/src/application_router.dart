@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:todart_web/src/error_page.dart';
-import 'package:todart_web/src/projects/projects_controller.dart';
-import 'package:todart_web/src/projects/projects_repository.dart';
+import './error_page.dart';
+import 'projects/controllers/projects_route_controller.dart';
+import 'projects/repositories/projects_repository.dart';
 
 class ApplicationRouter {
-  static final _projectsController = ProjectsController(ProjectsRepository());
+  static final _projectsController =
+      ProjectsRouteController(ProjectsRepository());
 
   static final List<GoRoute> _routes = [
     GoRoute(

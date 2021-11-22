@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:todart_common/api.dart';
-import '../settings/settings_view.dart';
+import '../../settings/settings_view.dart';
 
 class ProjectsListView extends StatelessWidget {
   const ProjectsListView({Key? key, required this.apiResponse})

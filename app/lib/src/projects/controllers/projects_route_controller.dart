@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:todart_common/api.dart';
-import 'package:todart_web/src/projects/projects_detail_view.dart';
-import 'package:todart_web/src/projects/projects_list_view.dart';
-import 'package:todart_web/src/projects/projects_repository.dart';
-import '../error_page.dart';
+import '../views/projects_detail_view.dart';
+import '../views/projects_list_view.dart';
+import '../repositories/projects_repository.dart';
+import '../../error_page.dart';
 
-class ProjectsController {
+/// A [ProjectsRouteController] is responsible for taking an incoming route
+/// for a project based resource via a [GoRouterState] along with a
+/// [BuildContext] and build the correct view after providing it whatever
+/// data it needs to build the view.
+class ProjectsRouteController {
   final ProjectsRepository _repository;
 
-  const ProjectsController(this._repository);
+  const ProjectsRouteController(this._repository);
 
   Page<dynamic> index(BuildContext context, GoRouterState state) {
     final request = ListProjectsRequest();
