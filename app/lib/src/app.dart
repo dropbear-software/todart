@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:todart_web/src/application_router.dart';
 import 'settings/settings_controller.dart';
-import 'common/router_state_notifier.dart';
 
 /// The Widget that configures your application.
-class ToDart extends ConsumerWidget {
+class ToDart extends StatelessWidget {
   ToDart({
     Key? key,
     required this.settingsController,
@@ -19,10 +17,7 @@ class ToDart extends ConsumerWidget {
   final _router = ApplicationRouter.getRouter();
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    ref.listen<String>(routerProvider, (previous, next) {
-      _router.go(next);
-    });
+  Widget build(BuildContext context) {
     // Glue the SettingsController to the MaterialApp.
     //
     // The AnimatedBuilder Widget listens to the SettingsController for changes.
