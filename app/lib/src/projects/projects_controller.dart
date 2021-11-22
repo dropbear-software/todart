@@ -1,26 +1,60 @@
+import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:todart_common/api.dart';
-import 'package:grpc/grpc_web.dart';
+import 'package:todart_web/src/projects/projects_detail_view.dart';
+import 'package:todart_web/src/projects/projects_list_view.dart';
+import 'package:todart_web/src/projects/projects_repository.dart';
+import '../error_page.dart';
 
-/// A class that many Widgets can interact with to work with [Project].
-///
-/// Controllers glue Data Services to Flutter Widgets.
 class ProjectsController {
-  ProjectsController() {
-    _serviceEndpoint =
-        GrpcWebClientChannel.xhr(Uri.parse('http://localhost:1337'));
-    _serviceClient = ProjectServiceClient(_serviceEndpoint);
+  final ProjectsRepository _repository;
+
+  const ProjectsController(this._repository);
+
+  Page<dynamic> index(BuildContext context, GoRouterState state) {
+    final request = ListProjectsRequest();
+    final method = _repository.listProjects;
+
+    return MaterialPage<void>(
+      key: state.pageKey,
+      child: FutureBuilder<ListProjectsResponse>(
+        future: method(request),
+        builder: (context, snapshot) {
+          if (snapshot.hasError) {
+            return _handleError(snapshot.error as Exception?);
+          }
+          if (snapshot.hasData) {
+            return ProjectsListView(apiResponse: snapshot.data!);
+          }
+          return const Center(child: CircularProgressIndicator());
+        },
+      ),
+    );
   }
 
-  late final GrpcWebClientChannel _serviceEndpoint;
-  late final ProjectServiceClient _serviceClient;
+  Page<dynamic> show(BuildContext context, GoRouterState state) {
+    final projectId = state.params['projectId']!;
+    final request = GetProjectRequest(name: projectId);
+    final method = _repository.getProjects;
 
-  Future<ListProjectsResponse> listProjects(ListProjectsRequest request) async {
-    final results = await _serviceClient.listProjects(request);
-    return results;
+    return MaterialPage<void>(
+      key: state.pageKey,
+      child: FutureBuilder<Project>(
+        future: method(request),
+        builder: (context, snapshot) {
+          if (snapshot.hasError) {
+            return _handleError(snapshot.error as Exception?);
+          }
+          if (snapshot.hasData) {
+            return ProjectDetailView(project: snapshot.data!);
+          }
+          return const Center(child: CircularProgressIndicator());
+        },
+      ),
+    );
   }
 
-  Future<Project> getProjects(GetProjectRequest getProjectRequest) async {
-    final result = await _serviceClient.getProject(getProjectRequest);
-    return result;
+  ErrorPage _handleError(Exception? exception) {
+    return ErrorPage(exception);
   }
 }
