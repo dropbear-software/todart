@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:todart_common/api.dart';
+import 'package:todart_common/common.dart';
 import '../views/projects_detail_view.dart';
 import '../views/projects_list_view.dart';
 import '../repositories/projects_repository.dart';
@@ -37,6 +38,16 @@ class ProjectsRouteController {
   }
 
   Page<dynamic> show(BuildContext context, GoRouterState state) {
+    // Make sure that we have the projectId and that it is a valid identifier
+    bool isRequestValid = (state.params.containsKey('projectId') &&
+        CloudResouceIdentity.isValid(state.params['projectId']!));
+
+    // Freak out if this is an invalid request
+    if (!isRequestValid) {
+      throw ArgumentError(
+          'Unable to find a valid projectId', state.params['projectID']);
+    }
+
     final projectId = state.params['projectId']!;
     final request = GetProjectRequest(name: projectId);
     final method = _repository.getProjects;
