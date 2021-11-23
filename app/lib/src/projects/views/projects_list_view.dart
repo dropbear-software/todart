@@ -1,3 +1,4 @@
+import 'package:adaptive_navigation/adaptive_navigation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:todart_common/api.dart';
@@ -55,8 +56,18 @@ class ProjectsListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: _showAppBar(context),
-        body: _showProjects(context, apiResponse.projects));
+    const _allDestinations = [
+      AdaptiveScaffoldDestination(title: 'Home', icon: Icons.home),
+      AdaptiveScaffoldDestination(title: 'Focus', icon: Icons.favorite),
+      AdaptiveScaffoldDestination(title: 'Inbox', icon: Icons.email),
+      AdaptiveScaffoldDestination(title: 'Projects', icon: Icons.folder),
+      AdaptiveScaffoldDestination(title: 'Settings', icon: Icons.settings),
+    ];
+    return AdaptiveNavigationScaffold(
+      appBar: _showAppBar(context),
+      body: _showProjects(context, apiResponse.projects),
+      destinations: _allDestinations,
+      selectedIndex: 3,
+    );
   }
 }
